@@ -1,0 +1,168 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, import_of_legacy_library_into_null_safe
+
+import 'package:classic_cars_collection/constants/app_colors.dart';
+import 'package:classic_cars_collection/constants/app_typography.dart';
+import 'package:clip_shadow/clip_shadow.dart';
+import 'package:flutter_lorem/flutter_lorem.dart' as lorem;
+import 'package:flutter/material.dart';
+
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+  List<String> words = [
+    "lamiie",
+    "lamiie",
+    "lamiie",
+    "lamiie",
+    "lamiie",
+    "lamiie",
+    "lamiie",
+  ];
+  @override
+  Widget build(BuildContext context) {
+    final typography = AppTypography(context);
+    final navigation_radius =
+        Radius.elliptical(typography.width * .15, typography.width * .15);
+    return Scaffold(
+      backgroundColor: AppColors.PRIMARY_COLOR,
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: typography.height * .02),
+            Expanded(
+              child: Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.centerLeft,
+                    children: [
+                      Container(
+                        height: (typography.height - 50),
+                        width: (typography.width * .2 - 5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: navigation_radius,
+                                bottomRight: navigation_radius)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: words
+                              .asMap()
+                              .entries
+                              .map(
+                                (e) => Expanded(
+                                  child: ClipShadow(
+                                    // ignore: prefer_const_literals_to_create_immutables
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(.4),
+                                          offset: Offset(1, 0),
+                                          blurRadius: 7,
+                                          spreadRadius: .2,
+                                          blurStyle: BlurStyle.outer),
+                                      BoxShadow(
+                                          color: AppColors.ACTIVE_COLOR,
+                                          offset: Offset(0, -10),
+                                          blurRadius: 10,
+                                          spreadRadius: 20,
+                                          blurStyle: BlurStyle.outer)
+                                    ],
+                                    clipper: NavigationClipper(
+                                        is_activate: _selectedIndex == e.key,
+                                        element_count: words.length,
+                                        current_element: e.key),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _selectedIndex = e.key;
+                                        });
+                                      },
+                                      child: Container(
+                                        color: AppColors.ACTIVE_COLOR,
+                                        child: Text(
+                                          e.value,
+                                          style: TextStyle(
+                                              fontSize: typography.h3,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            // height: 200,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NavigationClipper extends CustomClipper<Path> {
+  bool is_activate;
+  int element_count;
+  int current_element;
+  NavigationClipper(
+      {this.is_activate = false,
+      this.element_count = 1,
+      this.current_element = 0});
+  @override
+  Path getClip(Size size) {
+    double height = size.height;
+    double ratio = height / 5;
+    double width = size.width - ratio;
+    Path path = Path();
+    path.lineTo(0, height);
+    if (current_element == element_count - 1) {
+      path.quadraticBezierTo(width, height, width, height * .3);
+    } else {
+      path.lineTo(width, height);
+    }
+    if (is_activate) {
+      path.quadraticBezierTo(
+          width, height * .9, width + (ratio / 4), height * .8);
+      path.quadraticBezierTo(width + (ratio / 2), height * .7,
+          width + (3 * ratio / 4), height * .6);
+      path.quadraticBezierTo(
+          width + ratio, height * .5, width + (3 * ratio / 4), height * .4);
+      path.quadraticBezierTo(
+          width + (ratio / 2), height * .3, width + (ratio / 4), height * .2);
+      path.quadraticBezierTo(width, height * .1, width, 0);
+    } else {
+      path.lineTo(width, 0);
+    }
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
