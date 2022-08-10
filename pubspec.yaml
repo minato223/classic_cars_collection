@@ -36,3 +36,7 @@ flutter:
     - family: PoiretOne
       fonts:
         - asset: assets/fonts/PoiretOne/PoiretOne-Regular.ttf
+    - family: AmaticSC
+      fonts:
+        - asset: assets/fonts/AmaticSC/AmaticSC-Regular.ttf
+        - asset: assets/fonts/AmaticSC/AmaticSC-Bold.ttf

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Classic Car Collection',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Abel",
+        fontFamily: "PoiretOne",
         primarySwatch: Colors.blue,
       ),
       home: const Home(),
