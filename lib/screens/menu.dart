@@ -18,9 +18,10 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  int _selected_index = 5;
+  int _selected_index = 1;
   final List<String> _menus = ["Home", "Invoke", "Notification", "My Profile"];
   List<Widget> _navigations = [];
+  Tween<double> _animation_tween = Tween<double>(begin: 0, end: 1);
   @override
   void initState() {
     super.initState();
@@ -38,48 +39,46 @@ class _MenuState extends State<Menu> {
     ];
     return Scaffold(
       backgroundColor: AppColors.PRIMARY_COLOR,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: typography.height * .02),
-            Expanded(
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      Expanded(
-                        child: ClipShadow(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(.6),
-                                offset: Offset.zero,
-                                blurRadius: 10,
-                                spreadRadius: .2,
-                                blurStyle: BlurStyle.outer),
-                          ],
-                          clipper: NavigationClipper(
-                              elements_count: _navigations.length,
-                              selected_index: _selected_index),
-                          child: Container(
-                            height: (typography.height),
-                            width: (typography.width * .25),
-                            decoration:
-                                BoxDecoration(color: AppColors.ACTIVE_COLOR),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: _navigations.reversed
-                                  .toList()
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (e) => Expanded(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _selected_index = e.key;
-                                          });
-                                        },
+      body: Column(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                TweenAnimationBuilder<double>(
+                  duration: Duration(milliseconds: 300),
+                  tween: _animation_tween,
+                  builder: (context, value, child) {
+                    return Column(
+                      children: [
+                        SizedBox(height: typography.height * .05),
+                        Expanded(
+                          child: ClipShadow(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(.6),
+                                  offset: Offset.zero,
+                                  blurRadius: 10,
+                                  spreadRadius: .2,
+                                  blurStyle: BlurStyle.outer),
+                            ],
+                            clipper: NavigationClipper(
+                                elements_count: _navigations.length,
+                                selected_index: value),
+                            child: Container(
+                              height: (typography.height),
+                              width: (typography.width * .25),
+                              decoration:
+                                  BoxDecoration(color: AppColors.ACTIVE_COLOR),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: _navigations.reversed
+                                    .toList()
+                                    .asMap()
+                                    .entries
+                                    .map(
+                                      (e) => Expanded(
                                         child: Stack(
                                           alignment: Alignment.center,
                                           children: [
@@ -100,32 +99,46 @@ class _MenuState extends State<Menu> {
                                                     ),
                                                   )
                                                 : const SizedBox(),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: typography.width * .1),
-                                              child: Center(child: e.value),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _animation_tween =
+                                                      Tween<double>(
+                                                          begin: _selected_index
+                                                              .toDouble(),
+                                                          end:
+                                                              e.key.toDouble());
+                                                  _selected_index = e.key;
+                                                });
+                                              },
+                                              child: Container(
+                                                  padding: EdgeInsets.only(
+                                                      right: typography.width *
+                                                          .1),
+                                                  child:
+                                                      Center(child: e.value)),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
+                                    )
+                                    .toList(),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: typography.height * .01),
-                    ],
-                  ),
-                  Expanded(
-                    child: widget.child,
-                  ),
-                ],
-              ),
+                        SizedBox(height: typography.height * .01),
+                      ],
+                    );
+                  },
+                ),
+                Expanded(
+                  child: widget.child,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

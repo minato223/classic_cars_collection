@@ -11,7 +11,7 @@ class AppTypography {
   double get width => _width;
   double get height => _height;
   double get padding => _width * .02;
-  double get h1 => 20;
-  double get h2 => 16;
-  double get h3 => 12;
+  double get h1 => _width * .04;
+  double get h2 => _width * .035;
+  double get h3 => _width * .025;
 }

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 class NavigationClipper extends CustomClipper<Path> {
   int elements_count;
-  int selected_index;
+  double selected_index;
   NavigationClipper(
       {required this.elements_count, required this.selected_index});
   @override
@@ -18,12 +18,12 @@ class NavigationClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(
         width * .59,
         (one_height * selected_index) + one_height * .2,
-        width * .65,
+        width * .7,
         (one_height * selected_index) + one_height * .3);
     path.quadraticBezierTo(
         width * .85,
         (one_height * selected_index) + one_height * .5,
-        width * .65,
+        width * .7,
         (one_height * selected_index) + one_height * .7);
     path.quadraticBezierTo(
         width * .6,

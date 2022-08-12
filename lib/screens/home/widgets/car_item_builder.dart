@@ -4,6 +4,7 @@
 import 'package:classic_cars_collection/constants/app_colors.dart';
 import 'package:classic_cars_collection/constants/app_typography.dart';
 import 'package:classic_cars_collection/models/car.dart';
+import 'package:classic_cars_collection/screens/detail/detail.dart';
 import 'package:flutter/material.dart';
 
 class CarItemBuilder extends StatefulWidget {
@@ -57,110 +58,131 @@ class _CarItemBuilderState extends State<CarItemBuilder>
   Widget build(BuildContext context) {
     final typography = AppTypography(context);
     Radius border_radius = Radius.circular(typography.padding * 3);
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: SizedBox(
-        height: typography.height * .2,
-        width: typography.width * .65,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Container(
-              height: typography.height * .16,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        offset: const Offset(10, 10),
-                        color: Colors.black26.withOpacity(.2),
-                        spreadRadius: 2,
-                        blurRadius: 15)
-                  ],
-                  border: Border.all(color: Colors.black12, width: 2),
-                  color: AppColors.PRIMARY_COLOR_DARK,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.elliptical(
-                          typography.width * .2, typography.width * .1),
-                      bottomLeft: border_radius,
-                      bottomRight: border_radius,
-                      topRight: border_radius)),
-              width: double.infinity,
-              child: Padding(
-                padding: EdgeInsets.all(typography.padding * .5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          _is_selected
-                              ? _animation_controller.reverse()
-                              : _animation_controller.forward();
-                        },
-                        child: AnimatedBuilder(
-                            animation: _animation_controller,
-                            builder: (context, _) {
-                              return Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: typography.padding / 3,
-                                    horizontal: typography.padding * 1.2),
-                                decoration: BoxDecoration(
-                                    color: AppColors.ACTIVE_COLOR,
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: border_radius,
-                                        topRight: border_radius)),
-                                child: Transform.scale(
-                                  // origin: Offset(_scale_animation.value,
-                                  //     _scale_animation.value),
-                                  scaleX: _scale_animation.value,
-                                  scaleY: _scale_animation.value,
-
-                                  child: Icon(
-                                    Icons.favorite_rounded,
-                                    size: typography.h2 * 1.3,
-                                    color: _color_animation.value,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .push(PageRouteBuilder(pageBuilder: (context, a, b) {
+          return Detail(car: widget.car);
+        }));
+      },
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: typography.height * .02),
+          height: typography.height * .2,
+          width: typography.width * .65,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Container(
+                height: typography.height * .16,
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          offset: const Offset(10, 10),
+                          color: Colors.black26.withOpacity(.2),
+                          spreadRadius: 2,
+                          blurRadius: 15)
+                    ],
+                    border: Border.all(color: Colors.black12, width: 2),
+                    color: AppColors.PRIMARY_COLOR_DARK,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.elliptical(
+                            typography.width * .2, typography.width * .1),
+                        bottomLeft: border_radius,
+                        bottomRight: border_radius,
+                        topRight: border_radius)),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.all(typography.padding * .5),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            _is_selected
+                                ? _animation_controller.reverse()
+                                : _animation_controller.forward();
+                          },
+                          child: AnimatedBuilder(
+                              animation: _animation_controller,
+                              builder: (context, _) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: typography.padding / 3,
+                                      horizontal: typography.padding * 1.2),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.ACTIVE_COLOR,
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: border_radius,
+                                          topRight: border_radius)),
+                                  child: Transform.scale(
+                                    scaleX: _scale_animation.value,
+                                    scaleY: _scale_animation.value,
+                                    child: Icon(
+                                      Icons.favorite_rounded,
+                                      size: typography.h2 * 1.3,
+                                      color: _color_animation.value,
+                                    ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                        ),
                       ),
-                    ),
-                    const Expanded(child: SizedBox()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: typography.padding * 2),
-                      child: Text(widget.car.title,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: typography.h2,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(height: typography.padding * 2),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: typography.padding * 2),
-                      child: Text(widget.car.description.toUpperCase(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: typography.h3,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(height: typography.padding * 2),
-                  ],
+                      const Expanded(child: SizedBox()),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: typography.padding * 2),
+                        child: Text(widget.car.title,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: typography.h2,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(height: typography.padding * 2),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: typography.padding * 2),
+                        child: Text(widget.car.description.toUpperCase(),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: typography.h3,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(height: typography.padding * 2),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Transform.translate(
-              offset: Offset(-typography.padding * 5, -typography.height * .07),
-              child: Image.asset(
-                widget.car.image_path,
-                height: typography.height * .15,
-              ),
-            )
-          ],
+              Transform.translate(
+                offset:
+                    Offset(-typography.padding * 5, -typography.height * .08),
+                child: Hero(
+                    tag: widget.car.id,
+                    flightShuttleBuilder: (context, animation, flightDirection,
+                        fromHeroContext, toHeroContext) {
+                      Widget toHero = toHeroContext.widget;
+                      if (flightDirection == HeroFlightDirection.pop) {
+                        return toHero;
+                      } else {
+                        return FadeTransition(
+                          opacity: const AlwaysStoppedAnimation(0),
+                          child: toHero,
+                        );
+                      }
+                    },
+                    child: Image.asset(
+                      widget.car.image_path,
+                      height: typography.height * .15,
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );
