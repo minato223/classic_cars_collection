@@ -14,7 +14,7 @@ import 'package:flutter_lorem/flutter_lorem.dart' as lorem;
 class Detail extends StatelessWidget {
   Car car;
   Detail({Key? key, required this.car}) : super(key: key);
-  int _animation_duration = 400;
+  int _animation_duration = 500;
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,8 @@ class Detail extends StatelessWidget {
                       ),
                       Expanded(
                           child: TweenAnimationBuilder<double>(
-                        tween: Tween<double>(begin: 1, end: .1),
-                        curve: Curves.fastLinearToSlowEaseIn,
+                        tween: Tween<double>(begin: 1, end: .05),
+                        curve: Curves.fastOutSlowIn,
                         duration: Duration(milliseconds: _animation_duration),
                         builder: (context, value, child) {
                           return Transform(
