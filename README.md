@@ -2,4 +2,4 @@
 
 #### Integration challenge : Day 1
 
-![appdemo](https://github.com/minato223/bonsai/blob/master/assets/images/app.png)
+![appdemo](https://github.com/minato223/classic_cars_collection/blob/master/assets/images/car.jpg)
